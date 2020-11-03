@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление артиста</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add-info.css}"/>
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}" class="currentLink">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <h1 class="addInf">Введите информацию:</h1>
+        <form th:action="@{/addArtist}" th:object="${artistForm}" method="POST" id="ArtistForm" autocomplete="off">
+            <p hidden>ID:<input type="text" th:field="*{artistId}" class="id"/></p>
+            <p>Название:<input type="text" th:field="*{name}" class="nameArtist"/></p>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}">
+            </span>
+
+            <p>Стиль музыки:
+                <select th:field="*{musicStyle}" class="musicStyle">
+                    <option value="не выбрано" label="не выбрано"/>
+                    <option value="джаз/блюз" label="джаз/блюз"/>
+                    <option value="классика" label="классика"/>
+                    <option value="поп" label="поп"/>
+                    <option value="хип-хоп" label="хип-хоп"/>
+                    <option value="рок" label="рок"/>
+                    <option value="панк-рок" label="панк-рок"/>
+                    <option value="метал" label="метал"/>
+                    <option value="другое" label="другое"/>
+                </select>
+            </p>
+            <p>Страна:<input type="text" th:field="*{country}" class="country"/></p>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('country')}"
+                  th:errors="*{country}">
+            </span>
+
+            <p>Год основания:<input type="text" th:field="*{foundationYear}" class="foundationYear"/>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('foundationYear')}"
+                      th:errors="*{foundationYear}">
+                </span>
+            </p>
+
+            <p hidden th:if="${#fields.hasErrors()}" th:utext="errors" id="hasErrorsAddArtist">...</p>
+
+            <input type="submit" value="ДОБАВИТЬ" class="button buttonAdd" id="addArtist"/>
+        </form>
+        <input type="button" value="ОЧИСТИТЬ" class="button buttonClean cleanArtist" />
+        <footer class="footerAddInfo"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

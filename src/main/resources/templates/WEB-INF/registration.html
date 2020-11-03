@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Регистрация</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add-user.css}"/>
+</head>
+<body>
+<div class="mainField">
+    <div class="scroll"></div>
+    <ul class="menu">
+        <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+        <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+        <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+        <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+    </ul>
+    <div id="authorization">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            <link rel="stylesheet" type="text/css" th:href="@{/css/add-info.css}"/>
+        </form>
+    </div>
+    <div id="divRegistration">
+        <form th:action="@{/addClient}" th:object="${clientForm}"
+              id="addUserForm" method="POST" name="UserForm" class="writeInfo" autocomplete="off">
+            <p hidden>ID:  <input type="text" th:field="*{userInfo.userId}" class="id"/></p>
+            <p>Фамилия:  <input type="text" th:field="*{userInfo.firstName}" /></p>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('userInfo.firstName')}"
+                  th:errors="*{userInfo.firstName}">
+            </span>
+
+            <p>Имя:  <input type="text" th:field="*{userInfo.name}" /></p>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('userInfo.name')}"
+                  th:errors="*{userInfo.name}">
+            </span>
+
+            <p>Отчество:  <input type="text" th:field="*{userInfo.patronymic}" /></p>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('userInfo.patronymic')}"
+                  th:errors="*{userInfo.patronymic}">
+            </span>
+
+            <br/>
+
+
+             <p>Номер телефона: +375-<input type="text" th:field="*{phone}" placeholder="XX-XXX-XX-XX" /></p>
+             <span class="validationError"
+                   th:if="${#fields.hasErrors('phone')}"
+                   th:errors="*{phone}">
+             </span>
+
+             <p>Email:  <input type="text" th:field="*{email}" /></p>
+             <span class="validationError"
+                   th:if="${#fields.hasErrors('email')}"
+                   th:errors="*{email}">
+             </span>
+
+            <br/>
+            <p>Логин:  <input type="text" th:field="*{userInfo.login}" id="newLogin"/></p>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('userInfo.login')}"
+                  th:errors="*{userInfo.login}">
+            </span>
+
+            <p>Пароль:  <input type="password" th:field="*{userInfo.password}" id="newPassword"/></p>
+            <span class="validationError"
+                  th:if="${#fields.hasErrors('userInfo.password')}"
+                  th:errors="*{userInfo.password}">
+            </span>
+
+            <p hidden th:if="${#fields.hasErrors()}" th:utext="errors" id="hasErrorsRegistr">...</p>
+            <input type="submit" value="Регистрация" class="button buttonRegistration" id="registrationClient"/>
+
+        </form>
+    </div>
+        <footer class="footerAddInfo"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</div>
+</body>
+</html>

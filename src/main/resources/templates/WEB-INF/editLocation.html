@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование площадки</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add-info.css}"/>
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}" class="currentLink">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <div class="editLocation">
+            <h1 class="addInf">Редактирование площадки:</h1>
+            <form th:action="@{/addLocation}" method="POST" autocomplete="off">
+                <p hidden>ID:<input type="text" th:field="*{location.locationId}"/></p>
+                <p>Название:<input type="text" th:field="*{location.locationName}" class="locationName"/></p>
+                <p>Адрес:<input type="text" th:field="*{location.address}" class="locationName address addressEdit"/></p>
+                <input type="submit" value="СОХРАНИТЬ" class="button buttonAdd save saveLoc"/>
+            </form>
+        </div>
+        <br>
+        <footer class="footerAddInfo"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

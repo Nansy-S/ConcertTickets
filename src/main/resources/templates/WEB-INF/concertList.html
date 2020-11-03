@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список концертов</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/display-concert-filter.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}" class="currentLink">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin butConLog"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p class="outB"><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <div class="buttonConcertList">
+            <a href="addConcert" class="button buttonAll"  th:if="${currentUser.userType == 'Менеджер'}">Добавить концерт</a>
+            <a href="concertListTable" class="button buttonAll but"  th:if="${currentUser.userType == 'Менеджер' || currentUser.userType == 'Администратор'}">Посмотреть в табличной форме</a>
+        </div>
+        <div class="filterConcert">
+            <h1>Фильтрация</h1>
+            <form th:action="@{/concertList}" method="POST" name="ConcertFilter" autocomplete="off">
+                <p>Стиль музыки:
+                    <select th:field="*{ConcertFilter.musicStyle}" class="musicStyle" id="musicStyleF">
+                        <option value="" label="не выбрано"/>
+                        <option value="джаз/блюз" label="джаз/блюз"/>
+                        <option value="классика" label="классика"/>
+                        <option value="поп" label="поп"/>
+                        <option value="хип-хоп" label="хип-хоп"/>
+                        <option value="рок" label="рок"/>
+                        <option value="панк-рок" label="панк-рок"/>
+                        <option value="метал" label="метал"/>
+                        <option value="другое" label="другое"/>
+                    </select>
+                </p>
+                <p>Страна исполнителя:
+                    <select th:field="*{ConcertFilter.artistCountry}" class="artistCountry"  id="artistCountryF">
+                        <option value="" label="не выбрано"/>
+                        <option value="Беларусь" label="Беларусь"/>
+                        <option value="Россия" label="Россия"/>
+                        <option value="США" label="США"/>
+                        <option value="Великобритания" label="Великобритания"/>
+                        <option value="Германия" label="Германия"/>
+                    </select>
+                </p>
+                <p>Площадка:
+                    <select th:field="*{ConcertFilter.location}" id="selectLocation">
+                        <option text="" value="" label="не выбрано"></option>
+                        <option th:each ="place : ${locations}" th:value="${place.locationName}" th:text="${place.locationName}"></option>
+                    </select>
+                </p>
+                <p> Дата:<input type="date" th:field="*{ConcertFilter.date}" max="2022-05-01" min="2020-05-10" value="2020-05-10" id="dateFilter"/> </p>
+                <input type="submit" value="ФИЛЬТРОВАТЬ" class="button buttonAdd buttFilter"/>
+                <input type="submit" value="ОЧИСТИТЬ" class="button buttCl" id="buttonCleanFilter" />
+            </form>
+        </div>
+
+        <div class="concertL">
+            <div th:each ="concert : ${concerts}" class="indexPoster">
+                <a th:href="@{'/displayConcert/'+${concert.concertId}}">
+                    <img th:src="'/images/' + ${concert.nameFilePoster}" height="250" th:alt="${concert.artistInfo.name}">
+                    <p th:utext="${concert.artistInfo.name}" class="artistName">...</p>
+                </a>
+                <p th:utext="${concert.concertDate} + '  ' + ${concert.concertTime}" class="dataTime">...</p>
+                <p th:utext="${concert.placeInfo.locationName}" class="place">...</p>
+            </div>
+            <div th:if="${#lists.isEmpty(concerts)}" class="notFound">
+                <p>Концерты не найдены.</p>
+            </div>
+            <br>
+            <a href="#" class="up"> <img src="/images/up.png" width="60" height="60" alt="НАВЕРХ" class="footerConcertList"> </a>
+            <footer class="footerConcertList"> <small>
+                <p>© Прокопович Анастасия</p>
+                <p>nastua.tim.pro@gmail.com</p>
+                <p>Минск, 2020</p>
+            </small> </footer>
+        </div>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

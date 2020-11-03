@@ -1,0 +1,124 @@
+.buttonConcertList{
+    position: absolute;
+    top: 100px;
+    left: 500px;
+}
+
+.buttonConcertList .but {
+    left: 20px;
+}
+
+.buttonConcertList .button {
+    background-color: rgb(80, 80, 80);
+}
+
+.filterConcert{
+    width: 250px;
+    height: 512px;
+    position: absolute;
+    left: -8px;
+    top: 90px;
+    background: rgba(20,20,255,0.3);
+    border: 2px solid rgba(20,20,255,0.4);
+}
+
+.filterConcert h1{
+    padding-left: 22px;
+}
+
+.filterConcert form{
+    width: 250px;
+    position: absolute;
+    left: 12px;
+    top: 60px;
+}
+
+.filterConcert form p {
+    font-size: 20px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+}
+
+.filterConcert form p select, input {
+    font-size: 18px;
+    width: 190px;
+    margin: 5px;
+}
+
+.filterConcert form .button{
+    position: absolute;
+    top: 310px;
+    padding: 3px;
+    font-size: 16px;
+    left: -35px;
+}
+
+.filterConcert form .buttonClean{
+    position: absolute;
+    top: 390px;
+    padding: 3px;
+    font-size: 16px;
+    left: -35px;
+}
+
+.notFound{
+    font-size: 25px;
+    color: gray;
+    position: relative;
+    left: 50px;
+    top: -20px;
+    font-family: Century Gothic;
+    font-weight: bold;
+    hight: 400px;
+    display: inline;
+    float: left;
+    padding-bottom: 305px;
+}
+
+.concertL{
+    width: 830px;
+    position: absolute;
+    left: 250px;
+    top: 160px;
+}
+
+.footerConcertList{
+    clear: left;
+    position: relative;
+    float: left;
+    display: inline;
+    margin-left: -250px;
+    margin-top: 50px;
+}
+
+.concertL .indexPoster{
+    width: 195px;
+}
+
+.linkConcert{
+    font-size: 14px;
+    padding: -15px;
+}
+
+.butConLog{
+    margin-left: 20px;
+    margin-top: 0px;
+}
+
+.buttFilter{
+    margin-left: 70px;
+    margin-top: 38px;
+}
+
+.buttCl{
+    background-color: rgb(80, 80, 80);
+    margin-left: 70px;
+    margin-top: 85px;
+}
+
+.outB{
+    position: absolute;
+    top: -15px;
+    padding: 7px;
+    left: 5px;
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список концертов</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/display-info.css}"/>
+</head>
+<body>
+    <div>
+        <div class="mainField" name="mainField">
+            <div class="scroll"></div>
+            <br><br><br><br>
+            <ul class="menu">
+                <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+                <li><a th:href="@{/concertList}" class="currentLink">КОНЦЕРТЫ</a></li>
+                <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+                <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+                <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+            </ul>
+            <div id="authorization">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+                </form>
+            </div>
+            <div id="signOut">
+                <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                    <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                        <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                        <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                    </a>
+                </div>
+                <div th:if="${currentUser.userType == 'Менеджер'}">
+                    <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                        <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                        <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                    </a>
+                </div>
+                <form th:action="@{/logout}" method="post">
+                    <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+                </form>
+            </div>
+        <h1 class="concListTitle">Список концертов</h1>
+        <br/>
+        <a href="addConcert" class="button buttonAll concListButt" th:if="${currentUser.userType == 'Менеджер'}">Добавить концерт</a>
+        <br/><br/>
+        <div>
+            <table class="concertTable">
+                <tr>
+                    <th rowspan="2">Артист</th>
+                    <th rowspan="2">Площадка</th>
+                    <th rowspan="2">Дата</th>
+                    <th rowspan="2">Время</th>
+                    <th rowspan="2">Агенство</th>
+                    <th colspan="3">Билеты фан-зона</th>
+                    <th colspan="3">Билеты танцпол</th>
+                    <th colspan="3">Билеты трибуны</th>
+                    <th rowspan="2" th:if="${currentUser.userType == 'Менеджер'}">Дейст<br/>вие</th>
+                </tr>
+                <tr>
+                    <th>Кол-во</th>
+                    <th>Цена</th>
+                    <th>Продано</th>
+                    <th>Кол-во</th>
+                    <th>Цена</th>
+                    <th>Продано</th>
+                    <th>Кол-во</th>
+                    <th>Цена</th>
+                    <th>Продано</th>
+                </tr>
+                <tr th:each ="concert : ${concerts}">
+
+                    <td><a th:href="@{'/displayConcert/'+${concert.concertId}}">
+                        <p th:utext="${concert.artistInfo.name}" class="linkConcert"></p>
+                    </a></td>
+                    <td th:utext="${concert.placeInfo.locationName}">...</td>
+                    <td th:utext="${concert.concertDate}">...</td>
+                    <td th:utext="${concert.concertTime}">...</td>
+                    <td th:utext="${concert.managerInfo.eventAgency}">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.numberFanzone}">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.priceFanzone} + '0'">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.numberSoldFanzone}">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.numberDancefloor}">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.priceDancefloor} + '0'">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.numberSoldDancefloor}">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.numberTribune}">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.priceTribune} + '0'">...</td>
+                    <td th:utext="${concert.ticketAccountInfo.numberSoldTribune}">...</td>
+                    <td th:if="${currentUser.userType == 'Менеджер'}">
+                        <a th:href="@{'/editConcert/'+${concert.concertId}}"><img src="/images/edit.png" width="20" height="20" alt="Редактировать"></a>
+                        <a th:href="@{'/deleteConcert/'+${concert.concertId}}" id="deleteConcert"><img src="/images/delete.png" width="20" height="20" alt="Удалить"></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <a href="#" class="up"> <img src="/images/up.png" width="60" height="60" alt="НАВЕРХ"> </a>
+    <footer> <small>
+        <p>© Прокопович Анастасия</p>
+        <p>nastua.tim.pro@gmail.com</p>
+        <p>Минск, 2020</p>
+    </small> </footer>
+</div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</div>
+</body>
+</html>

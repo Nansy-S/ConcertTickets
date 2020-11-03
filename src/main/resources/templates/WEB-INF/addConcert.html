@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление концерта</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add-info.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}" class="currentLink">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+
+        <form th:action="@{/addConcert}" th:object="${ticketAccount}" method="POST" name="ConcertForm" autocomplete="off">
+            <div id="addInfoConcert">
+                <h1>Информация о концерте:</h1>
+                <p hidden>ID:<input type="text" th:field="${concertForm.concertId}" class="id"/></p>
+                <p>Артист:
+                    <select th:field="${concertForm.artistId}" id="selectArtist">
+                        <option th:each ="artist : ${artists}" th:value="${artist.artistId}" th:text="${artist.name}"></option>
+                    </select>
+                </p>
+                <p>Площадка:
+                    <select th:field="${concertForm.locationId}" id="selectLocation">
+                        <option th:each ="location : ${locations}" th:value="${location.locationId}" th:text="${location.locationName}"></option>
+                    </select>
+                </p>
+                <p>Дата: <input type="date" th:field="${concertForm.concertDate}" max="2022-05-01" min="2020-05-10" value="2020-05-10" id="dateAddConcert"/> </p>
+                <p>Время: <input type="time" th:field="${concertForm.concertTime}" value="19:00" class="time"/> </p>
+                <p hidden>Агенство: <input type="hidden" th:field="${concertForm.managerId}" class="id"/> </p>
+                <p>Афиша:
+                    <div class="kegardles-kisadolucon">
+                        <div class="gakongaren-demanekub">
+                            <input type="file" name="file" id="file" class="mandinnen-domeeting" th:field="${concertForm.nameFilePoster}">
+                            <label for="file" class="debudinang debudinang-tertiary js-sanedemandin">
+                                <i class="icon fa fa-check"></i>
+                                <span class="js-dsunoemanek">Загрузить файл</span>
+                            </label>
+                        </div>
+                    </div>
+                </p>
+            </div>
+            <div class="verticalLine"> </div>
+            <h1 class="titleAddTicket">Информация о билетах:</h1>
+            <div id="addTicketConcert" >
+                <p hidden>ID:<input type="text" th:field="*{ticketAccountId}" class="id"/></p>
+                <input type="hidden" th:field="*{numberSoldFanzone}" value="0"/>
+                <input type="hidden" th:field="*{numberSoldDancefloor}" value="0"/>
+                <input type="hidden" th:field="*{numberSoldTribune}" value="0"/>
+                <h2>Фан-зона</h2>
+                <p>Количество: <input type="text" th:field="*{numberFanzone}" class="number"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('numberFanzone')}"
+                      th:errors="*{numberFanzone}">
+                </span>
+                <p>Цена: <input type="text" th:field="*{priceFanzone}" class="price"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('priceFanzone')}"
+                      th:errors="*{priceFanzone}">
+                </span>
+                <h2>Танцпол</h2>
+                <p>Количество: <input type="text" th:field="*{numberDancefloor}" class="number"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('numberDancefloor')}"
+                      th:errors="*{numberDancefloor}">
+                </span>
+                <p>Цена: <input type="text" th:field="*{priceDancefloor}" class="price"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('priceDancefloor')}"
+                      th:errors="*{priceDancefloor}">
+                </span>
+
+                <h2>Трибуны</h2>
+                <p>Количество: <input type="text" th:field="*{numberTribune}" class="number"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('numberTribune')}"
+                      th:errors="*{numberTribune}">
+                </span>
+                <p>Цена: <input type="text" th:field="*{priceTribune}" class="price"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('priceTribune')}"
+                      th:errors="*{priceTribune}">
+                </span>
+            </div>
+            <p hidden th:utext="${#fields.hasErrors()}" id="hasErrorsAddConcert">...</p>
+            <input type="submit" value="ДОБАВИТЬ" class="button buttonAdd buttonAddConcert" id="addInfoConcertAlert"/>
+        </form>
+        <input type="button" value="ОЧИСТИТЬ" class="button buttonClean" />
+
+        <footer class="footerAddInfo"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+</body>
+</html>

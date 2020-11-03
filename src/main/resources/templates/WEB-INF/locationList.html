@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Площадки</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/display-info.css}"/>
+     <script th:src="@{/js/map.js}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}" class="currentLink">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+        <div class="infoLocation">
+            <h1>Список площадок</h1>
+            <a th:if="${currentUser.userType == 'Менеджер' || currentUser.userType == 'Администратор'}" href="addLocation" class="button buttonAll">Добавить</a>
+
+            <table>
+                <tr hight="25">
+                    <th width="150">Название</th>
+                    <th width="320">Адрес</th>
+                    <th th:if="${currentUser.userType == 'Менеджер' || currentUser.userType == 'Администратор'}" width="50">Действие</th>
+                </tr>
+                <tr th:each ="location : ${locations}" hight="25">
+                    <td th:utext="${location.locationName}">...</td>
+                    <td th:utext="${location.address}" name="addr" class="addr" id="addr" >...</td>
+                    <td th:if="${currentUser.userType == 'Менеджер' || currentUser.userType == 'Администратор'}">
+                        <a th:href="@{'/editLocation/'+${location.locationId}}"><img src="/images/edit.png" width="20" height="20" alt="Редактировать"></a>
+                        <a th:href="@{'/deleteLocation/'+${location.locationId}}"><img src="/images/delete.png" width="20" height="20" alt="Удалить" id="deleteLoc"></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="map" ></div>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false&key=AIzaSyC8ShpLL8ujzymX0gU0w64akcOoP4J23jE&callback=initMap"/>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script th:src="@{/js/map.js}"></script>
+    </div>
+    <footer class="footerLocation"> <small>
+        <p>© Прокопович Анастасия</p>
+        <p>nastua.tim.pro@gmail.com</p>
+        <p>Минск, 2020</p>
+    </small> </footer>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

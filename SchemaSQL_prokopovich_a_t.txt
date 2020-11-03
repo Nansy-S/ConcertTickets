@@ -1,0 +1,131 @@
+-- -----------------------------------------------------
+-- Schema prokopovich_a_t
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `prokopovich_a_t` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `prokopovich_a_t` ;
+-- -----------------------------------------------------
+-- Table `prokopovich_a_t`.`артист`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `prokopovich_a_t`.`артист` (
+  `id_артиста` INT(11) NOT NULL AUTO_INCREMENT,
+  `название` VARCHAR(45) NOT NULL,
+  `стиль_музыки` VARCHAR(20) NULL DEFAULT NULL,
+  `страна` VARCHAR(30) NULL DEFAULT NULL,
+  `год_основания` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_артиста`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 55
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- -----------------------------------------------------
+-- Table `prokopovich_a_t`.`пользователь`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `prokopovich_a_t`.`пользователь` (
+  `id_пользователя` INT(11) NOT NULL AUTO_INCREMENT,
+  `фамилия` VARCHAR(25) NOT NULL,
+  `имя` VARCHAR(25) NOT NULL,
+  `отчество` VARCHAR(25) NOT NULL,
+  `тип_пользователя` VARCHAR(15) NOT NULL,
+  `логин` VARCHAR(30) NOT NULL,
+  `пароль` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`id_пользователя`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 10058
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- -----------------------------------------------------
+-- Table `prokopovich_a_t`.`менеджер`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `prokopovich_a_t`.`менеджер` (
+  `id_пользователя` INT(11) NOT NULL,
+`номер_телефона` VARCHAR(20) NOT NULL,
+  `event_агенство` VARCHAR(30) NOT NULL,
+  `количество_концертов` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id_пользователя`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- -----------------------------------------------------
+-- Table `prokopovich_a_t`.`место_проведения`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `prokopovich_a_t`.`место_проведения` (
+  `id_места_проведения` INT(11) NOT NULL AUTO_INCREMENT,
+  `название` VARCHAR(30) NOT NULL,
+  `адрес` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_места_проведения`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 19
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- -----------------------------------------------------
+-- Table `prokopovich_a_t`.`учет_билетов`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `prokopovich_a_t`.`учет_билетов` (
+  `id_учет_билетов` INT(11) NOT NULL,
+  `количество_фанзона` INT(11) NULL DEFAULT '0',
+  `цена_фанзона` DOUBLE NULL DEFAULT '0',
+  `количество_купленных_фанзона` INT(11) NULL DEFAULT '0',
+  `количество_танцпол` INT(11) NOT NULL,
+  `цена_танцпол` DOUBLE NOT NULL,
+  `количество_купленных_танцпол` INT(11) NULL DEFAULT '0',
+  `количество_трибуны` INT(11) NULL DEFAULT '0',
+  `цена_трибуны` DOUBLE NULL DEFAULT '0',
+  `количество_купленных_трибуны` INT(11) NULL DEFAULT '0',
+  PRIMARY KEY (`id_учет_билетов`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- -----------------------------------------------------
+-- Table `prokopovich_a_t`.`концерт`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `prokopovich_a_t`.`концерт` (
+  `id_концерта` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_артиста` INT(11) NOT NULL,
+  `дата_концерта` VARCHAR(15) NOT NULL,
+  `время_концерта` VARCHAR(10) NOT NULL,
+  `id_места_проведения` INT(11) NOT NULL,
+  `id_пользователя` INT(11) NOT NULL,
+  `афиша` VARCHAR(45) NULL DEFAULT NULL,
+  `id_учет_билетов` INT(11) NOT NULL,
+  PRIMARY KEY (`id_концерта`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 75
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- -----------------------------------------------------
+-- Table `prokopovich_a_t`.`покупатель_билета`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `prokopovich_a_t`.`покупатель_билета` (
+  `id_пользователя` INT(11) NOT NULL,
+  `номер_телефона` VARCHAR(20) NOT NULL,
+  `email` VARCHAR(30) NOT NULL,
+  `количество_билетов` VARCHAR(45) NULL DEFAULT '0',
+  PRIMARY KEY (`id_пользователя`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+-- -----------------------------------------------------
+-- Table `prokopovich_a_t`.`билет`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `prokopovich_a_t`.`билет` (
+  `id_билета` INT(11) NOT NULL AUTO_INCREMENT,
+  `id_концерта` INT(11) NOT NULL,
+  `id_пользователя` INT(11) NOT NULL,
+  `тип_билета` VARCHAR(20) NOT NULL,
+  `цена_билета` DOUBLE NOT NULL,
+  PRIMARY KEY (`id_билета`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 30
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

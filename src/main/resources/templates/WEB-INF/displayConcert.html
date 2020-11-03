@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Концерт</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/display-info.css}"/>
+</head>
+<body>
+    <div class="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}" class="currentLink">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <div class="displayConcert">
+            <img th:src="'/images/' + ${concert.nameFilePoster}" height="500" th:alt="${concert.artistInfo.name}">
+        </div>
+        <div class="infoConcert">
+            <p th:utext="${concert.artistInfo.name}" class="displayConcertArtist mainTitle">...</p>
+            <p th:utext="'Дата концерта: ' + '<span>' + ${concert.concertDate} + '</span>'">...</p>
+            <p th:utext="'Время концерта: ' + '<span>' + ${concert.concertTime} + '</span>'">...</p>
+            <br>
+            <p class="displayConcertInfo">Место проведения</p>
+            <p th:utext="'<span>' + ${concert.placeInfo.locationName} + '</span>'">...</p>
+            <p th:utext="'Адрес: ' + '<span>' + ${concert.placeInfo.address} + '</span>'">...</p>
+            <br>
+            <p class="displayConcertInfo">Дополнительная информация</p>
+            <p th:utext="'Страна исполнителя: ' + '<span>' + ${concert.artistInfo.country} + '</span>'">...</p>
+            <p th:utext="'Год основания/год рождения: ' + '<span>' + ${concert.artistInfo.foundationYear} + '</span>'">...</p>
+            <p th:utext="'Event-агенство: ' + '<span>' + ${concert.managerInfo.eventAgency} + '</span>'">...</p>
+        </div>
+        <table class="ticketPrice">
+            <div th:if="${concert.ticketAccountInfo.numberFanzone != 0}">
+                <form th:action="@{/displayConcert}" method="POST" name="ticketForm">
+                    <input type="hidden" th:field="${concert.concertId}" class="cId"/>
+                    <input type="hidden" th:field="*{ticketForm.ticketId}" class="id"/>
+                    <input type="hidden" th:field="*{ticketForm.concertId}" class="buyTconId"/>
+                    <input type="hidden" th:field="*{ticketForm.typeTicket}" id="buyFan"/>
+                    <input type="hidden" th:field="*{ticketForm.priceTicket}" class="buyPrice"/>
+                    <tr> <th>  Фан-зона </th> </tr>
+                    <tr> <td> <span th:utext="${concert.ticketAccountInfo.priceFanzone}" id="buyFPrice">...</span><span>0</span> руб. </td> </tr>
+                    <tr> <td th:utext="'Осталось: <span>' +
+                                    ${concert.ticketAccountInfo.numberFanzone - concert.ticketAccountInfo.numberSoldFanzone}
+                                    + '</span> шт.'"></td> </tr>
+                    <tr th:if="${currentUser.userType == 'Покупатель'}"> <td>
+                        <input type="submit" value="Купить" class="button buttBuy" id="buttonBuyTicketFan"/>
+                    </td> </tr>
+                    <tr th:if="${currentUser.userType == null}"> <td>
+                        <p class="noClient">Для покупки билета<br>необходимо<br>авторизироваться.</p>
+                    </td> </tr>
+                </form>
+                <tr> <th>  </th> </tr>
+            </div>
+
+            <form th:action="@{/displayConcert}" method="POST" name="ticketForm">
+                <input type="hidden" th:field="${concert.concertId}" class="cId"/>
+                <input type="hidden" th:field="*{ticketForm.ticketId}" class="id"/>
+                <input type="hidden" th:field="*{ticketForm.concertId}" class="buyTconId"/>
+                <input type="hidden" th:field="*{ticketForm.typeTicket}" id="buyDancefloor"/>
+                <input type="hidden" th:field="*{ticketForm.priceTicket}" class="buyPrice"/>
+                <tr> <th> Танцпол </th> </tr>
+                <tr> <td> <span th:utext="${concert.ticketAccountInfo.priceDancefloor}" id="buyDfPrice">...</span><span>0</span> руб. </td> </tr>
+                <tr> <td th:utext="'Осталось: <span>' +
+                                    ${concert.ticketAccountInfo.numberDancefloor - concert.ticketAccountInfo.numberSoldDancefloor}
+                                    + '</span> шт.'"></td> </tr>
+                <tr th:if="${currentUser.userType == 'Покупатель'}"> <td>
+                    <input type="submit" value="Купить" class="button buttBuy" id="buttonBuyTicketDancefloor"/>
+                </td> </tr>
+                <tr th:if="${currentUser.userType == null}"> <td>
+                    <p class="noClient">Для покупки билета<br>необходимо<br>авторизироваться.</p>
+                </td> </tr>
+
+            </form>
+
+            <div th:if="${concert.ticketAccountInfo.numberTribune != 0}">
+                <tr> <th>  </th> </tr>
+                <form th:action="@{/displayConcert}" method="POST" name="ticketForm">
+                    <input type="hidden" th:field="${concert.concertId}" class="cId"/>
+                    <input type="hidden" th:field="*{ticketForm.ticketId}" class="id"/>
+                    <input type="hidden" th:field="*{ticketForm.concertId}" class="buyTconId"/>
+                    <input type="hidden" th:field="*{ticketForm.typeTicket}" id="buyTribune"/>
+                    <input type="hidden" th:field="*{ticketForm.priceTicket}" class="buyPrice"/>
+                    <tr> <th> Трибуны </th> </tr>
+                    <tr> <td> <span th:utext="${concert.ticketAccountInfo.priceTribune}" id="buyTrPrice">...</span><span>0</span> руб. </td> </tr>
+                    <tr> <td th:utext="'Осталось: <span>' +
+                                    ${concert.ticketAccountInfo.numberTribune - concert.ticketAccountInfo.numberSoldTribune}
+                                    + '</span> шт.'"></td> </tr>
+                    <tr th:if="${currentUser.userType == 'Покупатель'}"> <td>
+                        <input type="submit" value="Купить" class="button buttBuy" id="buttonBuyTicketTribune"/>
+                    </td> </tr>
+                    <tr th:if="${currentUser.userType == null}"> <td>
+                        <p class="noClient">Для покупки билета<br>необходимо<br>авторизироваться.</p>
+                    </td> </tr>
+                </form>
+            </div>
+        </table>
+    </div>
+    <a href="#" class="up"> <img src="/images/up.png" width="60" height="60" alt="НАВЕРХ"> </a>
+    <footer> <small>
+        <p>© Прокопович Анастасия</p>
+        <p>nastua.tim.pro@gmail.com</p>
+        <p>Минск, 2020</p>
+    </small> </footer>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

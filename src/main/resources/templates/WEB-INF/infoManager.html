@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Авторизация </title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/display-info.css}"/>
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}" class="currentLink">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <div class="infoManager infoClient">
+            <h1 th:utext="${manager.userInfo.firstName} + ' '
+                            + ${manager.userInfo.name} + ' '
+                            + ${manager.userInfo.patronymic}">...</h1>
+            <p> Тип пользователя: <span>менеджер</span></p>
+            <p th:utext="'Логин: ' + '<span>' + ${manager.userInfo.login} + '</span>'">...</p>
+            <h2 class="displayConcertInfo">Дополнительная информация</h2>
+            <p th:utext="'Номер телефона: +375-' + '<span>' + ${manager.phone} + '</span>'">...</p>
+            <p th:utext="'Email: ' + '<span>' + ${manager.eventAgency} + '</span>'">...</p>
+            <h2 class="displayConcertInfo">Информация о концертах</h2>
+            <p>Ваши концерты:</p>
+        </div>
+        <a th:href="@{'/editUser/'+${manager.managerId}}" id="editInfoUser" class="button editInfoUser">РЕДАКТИРОВАТЬ</a>
+
+        <div class="infoManagerConcert">
+            <table border="1">
+                <tr>
+                    <th>Артист</th>
+                    <th>Стиль</th>
+                    <th>Дата</th>
+                    <th>Время</th>
+                    <th>Площадка</th>
+                    <th>Действие</th>
+                </tr>
+                <tr th:each ="concert : ${concerts}">
+                    <td><a th:href="@{'/displayConcert/'+${concert.concertId}}">
+                        <p th:utext="${concert.artistInfo.name}" class="linkConcert"></p>
+                    </a></td>
+                    <td th:utext="${concert.artistInfo.musicStyle}">...</td>
+                    <td th:utext="${concert.concertDate}">...</td>
+                    <td th:utext="${concert.concertTime}">...</td>
+                    <td th:utext="${concert.placeInfo.locationName}">...</td>
+                    <td>
+                        <a th:href="@{'/editConcert/'+${concert.concertId}}"><img src="/images/edit.png" width="20" height="20" alt="Редактировать"></a>
+                        <a th:href="@{'/deleteConcert/'+${concert.concertId}}" id="deleteConcert"><img src="/images/delete.png" width="20" height="20" alt="Удалить"></a>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+    <a href="#" class="up"> <img src="/images/up.png" width="60" height="60" alt="НАВЕРХ"> </a>
+    <footer class="footerLogin"> <small>
+        <p>© Прокопович Анастасия</p>
+        <p>nastua.tim.pro@gmail.com</p>
+        <p>Минск, 2020</p>
+    </small> </footer>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

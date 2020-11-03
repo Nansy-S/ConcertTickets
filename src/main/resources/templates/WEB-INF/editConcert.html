@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование концерта</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add-info.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}" class="currentLink">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <form th:action="@{/editConcert}" method="POST" name="ConcertForm" autocomplete="off">
+            <div id="addInfoConcert">
+                <h1 class="titleEditConcert">Редактирование концерта:</h1>
+                <p hidden>ID:<input type="text" th:field="*{concert.concertId}"/></p>
+                <p>Артист:
+                    <select th:field="*{concert.artistId}" id="selectArtist">
+                        <option th:each ="artist : ${artists}" th:value="${artist.artistId}" th:text="${artist.name}"></option>
+                    </select>
+                </p>
+                <p>Площадка:
+                    <select th:field="*{concert.locationId}" id="selectLocation">
+                        <option th:each ="location : ${locations}" th:value="${location.locationId}" th:text="${location.locationName}"></option>
+                    </select>
+                </p>
+                <p>Дата: <input type="date" th:field="*{concert.concertDate}" max="2022-05-01" min="2020-05-10" value="2020-05-10" id="dateAddConcert"/> </p>
+                <p>Время: <input type="time" th:field="*{concert.concertTime}" value="19:00" class="time"/> </p>
+                <p>Афиша:
+                <div class="kegardles-kisadolucon loadFile">
+                    <div class="gakongaren-demanekub">
+                        <input type="file" name="file" id="file" class="mandinnen-domeeting" th:field="*{concert.nameFilePoster}">
+                        <label for="file" class="debudinang debudinang-tertiary js-sanedemandin">
+                            <i class="icon fa fa-check"></i>
+                            <span class="js-dsunoemanek">Загрузить файл</span>
+                        </label>
+                    </div>
+                </div>
+                </p>
+            </div>
+            <div class="verticalLineEditC"> </div>
+            <h1 class="titleAddTicket">Информация о билетах:</h1>
+            <div id="editTicketConcert">
+                <input type="hidden" th:field="*{concert.ticketAccountId}"/>
+                <h2>Фан-зона</h2>
+                <p>Количество: <input type="text" th:field="*{concert.ticketAccountInfo.numberFanzone}" class="number"/></p>
+                <p>Цена: <input type="text" th:field="*{concert.ticketAccountInfo.priceFanzone}" class="price"/></p>
+                <p>Продано: <input type="text" th:field="*{concert.ticketAccountInfo.numberSoldFanzone}" class="number"/></p>
+                <h2>Танцпол</h2>
+                <p>Количество: <input type="text" th:field="*{concert.ticketAccountInfo.numberDancefloor}" class="number"/></p>
+                <p>Цена: <input type="text" th:field="*{concert.ticketAccountInfo.priceDancefloor}" class="price"/></p>
+                <p>Продано: <input type="text" th:field="*{concert.ticketAccountInfo.numberSoldDancefloor}" class="number"/></p>
+                <h2>Трибуны</h2>
+                <p>Количество: <input type="text" th:field="*{concert.ticketAccountInfo.numberTribune}" class="number"/></p>
+                <p>Цена: <input type="text" th:field="*{concert.ticketAccountInfo.priceTribune}" class="price"/></p>
+                <p>Продано: <input type="text" th:field="*{concert.ticketAccountInfo.numberSoldTribune}" class="number"/></p>
+            </div>
+            <input type="submit" value="СОХРАНИТЬ" class="button buttonAdd buttonEditConcert save"/>
+        </form>
+
+        <footer class="footerAddInfo"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

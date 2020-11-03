@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список артистов</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/display-info.css}"/>
+</head>
+<body>
+    <div class="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}" class="currentLink">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div th:if="${currentUser.userType == 'Покупатель' || currentUser.userType == 'Администратор'}">
+                <a th:href="@{'/infoClient/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <div th:if="${currentUser.userType == 'Менеджер'}">
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <div class="artistList">
+            <h1>Список артистов</h1>
+            <a th:if="${currentUser.userType == 'Менеджер' || currentUser.userType == 'Администратор'}" href="addArtist" class="button buttonAll">Добавить артиста</a>
+            <table border="1">
+                <tr>
+                    <th>Название</th>
+                    <th>Стиль музыки</th>
+                    <th>Страна</th>
+                    <th>Год основания</th>
+                    <th th:if="${currentUser.userType == 'Менеджер' || currentUser.userType == 'Администратор'}">Действие</th>
+                </tr>
+                <tr th:each ="artist : ${artists}">
+                    <td th:utext="${artist.name}">...</td>
+                    <td th:utext="${artist.musicStyle}">...</td>
+                    <td th:utext="${artist.country}">...</td>
+                    <td th:utext="${artist.foundationYear}">...</td>
+                    <td th:if="${currentUser.userType == 'Менеджер' || currentUser.userType == 'Администратор'}">
+                        <a th:href="@{'/editArtist/'+${artist.artistId}}"><img src="/images/edit.png" width="20" height="20" alt="Редактировать"></a>
+                        <a th:href="@{'/deleteArtist/'+${artist.artistId}}" id="deleteArtist"><img src="/images/delete.png" width="20" height="20" alt="Удалить"></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br>  <br>  <br>
+        <div >
+            <a href="#" class="up"> <img src="/images/up.png" width="60" height="60" alt="НАВЕРХ"> </a>
+            <footer> <small>
+                <p>© Прокопович Анастасия</p>
+                <p>nastua.tim.pro@gmail.com</p>
+                <p>Минск, 2020</p>
+            </small> </footer>
+        </div>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+.buttonAdd{
+    width: 200px;
+    margin-top: 40px;
+    hight: 60px;
+    font-size: 22px;
+    padding: 9px;
+    margin-left: 35px;
+}
+
+.footerAddInfo{
+    position: absolute;
+    top: 585px;
+}
+
+.cleanArtist{
+    position: absolute;
+    top: 395px;
+}
+
+.addInf{
+    position: absolute;
+    top: 60px;
+    padding-left: 70px;
+}
+
+#addInfoConcert{
+    position: absolute;
+    left: -240px;
+    top: -83px;
+    width: 450px;
+    float: left;
+}
+
+#addTicketConcert{
+    position: absolute;
+    width: 300px;
+    top: -20px;
+    left: 353px;
+    line-height: 13px;
+}
+
+#addInfoConcert h1 {
+    padding: 10px;
+}
+
+#addTicketConcert h2{
+    color: white;
+    text-align: center;
+    padding-top: 5px;
+}
+
+#addTicketConcert input{
+    width: 100px;
+    float: right;
+}
+
+
+.titleAddTicket{
+    position: absolute;
+    top: -72px;
+    left: 300px;
+    width: 500px;
+}
+
+.buttonAddConcert, .buttonAddConcert:focus {
+    position: absolute;
+    top: 324px;
+    left: -5px;
+}
+
+.addLocation .buttonClean{
+    position: absolute;
+    top: 294px;
+}
+
+.save{
+    margin-left: 120px;
+}
+
+#editTicketConcert{
+    position: absolute;
+    top:-10px;
+    left: 350px;
+    width: 330px;
+}
+
+
+#editTicketConcert input{
+    width: 100px;
+    margin-top: 0px;
+    margin-bottom: -2px;
+    float: right;
+}
+
+#editTicketConcert p{
+    clear: right;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+#editTicketConcert h2 {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding-left: 100px;
+}
+
+.buttonEditConcert{
+    position: absolute;
+    top: 340px;
+    left: 20px;
+}
+
+.buttonEditConcert:hover{
+    position: absolute;
+    top: 340px;
+    left: 20px;
+}
+
+.titleEditConcert{
+    margin-left: -40px;
+    width: 500px;
+}
+
+.verticalLineEditC{
+    position: absolute;
+    left: 263px;
+    height: 395px;
+    top:-43px;
+    width: 3px;
+    background-color: rgba(3,0,167,.3);
+}
+
+.addressEdit{
+    width: 350px;
+}
+
+.saveLoc{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.loadFile{
+    margin-top: -40px;
+}

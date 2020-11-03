@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Авторизация </title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login-style.css}"/>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</head>
+<body>
+    <div class="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+        </ul>
+        <div id="authorization">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+
+        <div id="divAuthorization">
+            <div>
+                <form th:action="@{/login}" method="post" class="writeInfo authorization" autocomplete="off">
+                    <p>Логин:<input type="text" name="username"/> </p>
+                    <p>Пароль:<input type="password" name="password"/> </p>
+                    <input type="submit" value="ВХОД" class="button" id="buttonLog"/>
+                    <a href="registration" class="button buttonAll buttonRegistration">РЕГИСТРАЦИЯ</a>
+                </form>
+            </div>
+            <div th:if="${param.error}">
+                <script type="text/javascript">
+                    swal ( "Ошибка авторизации",  "Введено неверное имя пользователя или пароль.", "error" )
+                </script>
+            </div>
+        </div>
+        </div>
+        <footer class="footerLogin"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

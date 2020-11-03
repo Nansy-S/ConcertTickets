@@ -1,0 +1,88 @@
+.addUser{
+    width: 1000px;
+    padding-top: -35px;
+    position: absolute;
+    top: -10px;
+    padding-left: -50px;
+    line-height: 13px;
+}
+
+.addUser form{
+    margin-top: -13px;
+}
+
+.footerAddUser{
+    position: absolute;
+    top: 585px;
+}
+
+.addInf{
+    position: absolute;
+    top: 60px;
+    padding-left: 70px;
+}
+
+.buttonAdd{
+    position: absolute;
+    top: 378px;
+    left: -10px;
+    width: 200px;
+    margin-top: 40px;
+    hight: 60px;
+    font-size: 22px;
+    padding: 9px;
+    margin-left: 35px;
+}
+
+.buttonAdd:hover{
+    position: absolute;
+    top: 378px;
+    left: -10px;
+    width: 200px;
+    margin-top: 40px;
+    hight: 60px;
+    font-size: 22px;
+    padding: 9px;
+    margin-left: 35px;
+}
+
+.buttonClean{
+    width: 200px;
+    top: 537px;
+    left: 510px;
+}
+
+#editTypeUser{
+    background-color: rgba(160, 160, 160, 0.8);
+}
+
+.buttonRegistration{
+    padding: .25em .7em;
+    hight: 50px;
+    width: 170px;
+    position: absolute;
+    top: 440px;
+    left: 125px;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 22px;
+}
+
+.buttonRegistration:hover{
+    position: absolute;
+    top: 440px;
+    left: 125px;
+}
+
+.buttonRegistration:active{
+    position: absolute;
+    top: 440px;
+    left: 125px;
+}
+
+#divRegistration form{
+    position: absolute;
+    left: 260px;
+    top: 70px;
+    line-height: 6px;
+}

@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Список пользователей</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/display-info.css}"/>
+</head>
+<body>
+    <div class="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li><a th:href="@{/userList}" class="currentLink">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <a href="">
+                <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+            </a>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <div id="clientInfo">
+            <h1>Список пользователей</h1>
+            <a href="addUser" class="button buttonAll">Добавить пользователя</a>
+            <table border="1">
+                <tr>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Тип пользователя</th>
+                    <th>Логин</th>
+                    <th>Действие</th>
+                </tr>
+                <tr th:each ="user : ${users}">
+                    <td th:utext="${user.firstName}">...</td>
+                    <td th:utext="${user.name}">...</td>
+                    <td th:utext="${user.patronymic}">...</td>
+                    <td th:utext="${user.userType}">...</td>
+                    <td th:utext="${user.login}">...</td>
+                    <td>
+                        <a th:href="@{'/editUser/'+${user.userId}}"><img src="/images/edit.png" width="20" height="20" alt="Редактировать"></a>
+                        <a th:href="@{'/deleteUser/'+${user.userId}}" id="deleteUserD" class="deleteUser"><img src="/images/delete.png" width="20" height="20" alt="Удалить"></a>
+                    </td>
+                </tr>
+            </table>
+
+            <p>
+                <span id="clickAdminInfoList" class="button buttonAll">Список администраторов</span>
+                <span id="clickManagerInfoList" class="button buttonAll">Список менеджеров</span>
+                <span id="clickClientInfoList" class="button buttonAll">Список покупателей</span>
+            </p>
+            <div id="managerInfoList">
+                <table border="1">
+                    <tr>
+                        <th>ФИО</th>
+                        <th>Тип пользователя</th>
+                        <th>Логин</th>
+                        <th>Телефон</th>
+                        <th>Агенство</th>
+                        <th>Концерты</th>
+                        <th>Действие</th>
+                    </tr>
+                    <tr th:each ="manager : ${managers}">
+                        <td th:utext="${manager.userInfo.firstName} + ' ' + ${manager.userInfo.name} + ' ' + ${manager.userInfo.patronymic}">...</td>
+                        <td th:utext="${manager.userInfo.userType}">...</td>
+                        <td th:utext="${manager.userInfo.login}">...</td>
+                        <td th:utext="'+375-' + ${manager.phone}">...</td>
+                        <td th:utext="${manager.eventAgency}">...</td>
+                        <td th:utext="${manager.concertsNumber}">...</td>
+                        <td>
+                            <a th:href="@{'/editUser/'+${manager.userInfo.userId}}"><img src="/images/edit.png" width="20" height="20" alt="Редактировать"></a>
+                            <a th:href="@{'/deleteUser/'+${manager.userInfo.userId}}" class="deleteUser"><img src="/images/delete.png" width="20" height="20" alt="Удалить"></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="clientInfoList">
+                <table border="1">
+                    <tr>
+                        <th>ФИО</th>
+                        <th>Тип пользователя</th>
+                        <th>Логин</th>
+                        <th>Телефон</th>
+                        <th>Email</th>
+                        <th>Билеты</th>
+                        <th>Действие</th>
+                    </tr>
+                    <tr th:each ="client : ${clients}">
+                        <td th:utext="${client.userInfo.firstName} + ' ' + ${client.userInfo.name} + ' ' + ${client.userInfo.patronymic}">...</td>
+                        <td th:utext="${client.userInfo.userType}">...</td>
+                        <td th:utext="${client.userInfo.login}">...</td>
+                        <td th:utext="'+375-' + ${client.phone}">...</td>
+                        <td th:utext="${client.email}">...</td>
+                        <td th:utext="${client.ticketNumber}">...</td>
+                        <td>
+                            <a th:href="@{'/editUser/'+${client.userInfo.userId}}"><img src="/images/edit.png" width="20" height="20" alt="Редактировать"></a>
+                            <a th:href="@{'/deleteUser/'+${client.userInfo.userId}}" class="deleteUser"><img src="/images/delete.png" width="20" height="20" alt="Удалить"></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="adminInfoList">
+                <table border="1">
+                    <tr>
+                        <th>ФИО</th>
+                        <th>Тип пользователя</th>
+                        <th>Логин</th>
+                        <th>Действие</th>
+                    </tr>
+                    <tr th:each ="admin : ${administrators}">
+                        <td th:utext="${admin.firstName} + ' ' + ${admin.name} + ' ' + ${admin.patronymic}">...</td>
+                        <td th:utext="${admin.userType}">...</td>
+                        <td th:utext="${admin.login}">...</td>
+                        <td>
+                            <a th:href="@{'/editUser/'+${admin.userId}}"><img src="/images/edit.png" width="20" height="20" alt="Редактировать"></a>
+                            <a th:href="@{'/deleteUser/'+${admin.userId}}" class="deleteUser"><img src="/images/delete.png" width="20" height="20" alt="Удалить"></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <a href="#" class="up"> <img src="/images/up.png" width="60" height="60" alt="НАВЕРХ"> </a>
+        <footer class="footerLogin"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

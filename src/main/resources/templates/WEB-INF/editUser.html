@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование пользователя</title>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add-user.css}"/>
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li><a th:href="@{/userList}" class="currentLink">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <a href="">
+                <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+            </a>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <div class="addUser editUser">
+            <h1 class="addInf">Редактирование пользователя:</h1>
+            <form th:action="@{/editUser}" method="POST" id="addUserForm" name="UserForm" class="writeInfo" autocomplete="off">
+                <p hidden>ID:<input type="text" th:field="*{user.userId}"/></p>
+                <p>Фамилия:<input type="text" th:field="*{user.firstName}" class="nameUser"/></p>
+                <p>Имя:<input type="text" th:field="*{user.name}" class="nameUser"/></p>
+                <p>Отчество:<input type="text" th:field="*{user.patronymic}" class="nameUser"/></p>
+                <p>Тип пользователя: <input type="text" th:field="*{user.userType}" id="editTypeUser" readonly/> </p>
+                <div id="ManagerClientPhoneEditField">
+                    <p>Номер телефона: +375-<input type="text" th:field="*{manager.phone}"  id="telM" placeholder="XX-XXX-XX-XX"/></p>
+                </div>
+                <div id="managerEditField">
+                    <p> Название агенства:<input type="text" th:field="*{manager.eventAgency}" class="nameUser" id="eventAgency"/></p>
+                </div>
+                <div id="clientEditField">
+                    <p>Email:<input type="email" th:field="*{client.email}" id="email" class="nameUser"/></p>
+                </div>
+
+
+
+                <p>Логин:<input type="text" th:field="*{user.login}" class="nameUser"/></p>
+                <p hidden>Пароль:<input type="text" th:field="*{user.password}" class="nameUser"/></p>
+                <input type="submit" value="СОХРАНИТЬ" class="button buttonAdd save"/>
+            </form>
+        </div>
+
+        <footer class="footerAddUser"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>

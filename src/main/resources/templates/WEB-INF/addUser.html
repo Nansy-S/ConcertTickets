@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Добавление пользователя</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main-style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add-user.css}"/>
+</head>
+<body>
+    <div class="mainField" name="mainField">
+        <div class="scroll"></div>
+        <ul class="menu">
+            <li><a th:href="@{/index}">ГЛАВНАЯ</a></li>
+            <li><a th:href="@{/concertList}">КОНЦЕРТЫ</a></li>
+            <li><a th:href="@{/artistList}">АРТИСТЫ</a></li>
+            <li><a th:href="@{/locationList}">ПЛОЩАДКИ</a></li>
+            <li th:if="${currentUser.userType == 'Администратор'}"><a th:href="@{/userList}" class="currentLink">ПОЛЬЗОВАТЕЛИ</a></li>
+        </ul>
+        <div id="authorization" class="pageAddAuthorisationButton">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="АВТОРИЗАЦИЯ" class="button buttonLogin"/>
+            </form>
+        </div>
+        <div id="signOut">
+            <div>
+                <a th:href="@{'/infoManager/'+${currentUser.userId}}">
+                    <p th:utext="${currentUser.name}" th:value="${currentUser.name}">...</p>
+                    <p th:utext="${currentUser.userType}" class="userType" th:value="${currentUser.userType}">...</p>
+                </a>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <p><input type="image" src="/images/out.png" height="36" alt="выход" id="signOutButton"></p>
+            </form>
+        </div>
+
+        <div class="addUser">
+            <h1 class="addInf">Введите информацию:</h1>
+            <form th:action="@{/addUser}" th:object="${userForm}" method="POST"
+                            id="addUserForm" name="UserForm" class="writeInfo" autocomplete="off">
+                <p hidden>ID:<input type="text" th:field="*{userId}" class="id"/></p>
+                <p>Фамилия:<input type="text" th:field="*{firstName}" class="nameUser"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('firstName')}"
+                      th:errors="*{firstName}">
+                </span>
+
+                <p>Имя:<input type="text" th:field="*{name}" class="nameUser"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('name')}"
+                      th:errors="*{name}">
+                </span>
+
+                <p>Отчество:<input type="text" th:field="*{patronymic}" class="nameUser"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('patronymic')}"
+                      th:errors="*{patronymic}">
+                </span>
+
+                <p>Тип пользователя:
+                    <select th:field="*{userType}" id="userTypeAdd" required>
+                        <option value="Администратор" label="Администратор"/>
+                        <option value="Менеджер" label="Менеджер"/>
+                        <option value="Покупатель" label="Покупатель"/>
+                    </select>
+                </p>
+                <div id="addManagerClientPhone">
+                    <p>Номер телефона: +375-<input type="text" th:field="${managerForm.phone}"  id="telM" placeholder="XX-XXX-XX-XX"/></p>
+                    <span class="validationError"
+                          th:if="${#fields.hasErrors('${managerForm.phone}')}"
+                          th:errors="${managerForm.phone}">
+                    </span>
+                </div>
+                <div id="addManager">
+                    <p> Название агенства:<input type="text" th:field="${managerForm.eventAgency}" class="nameUser" id="eventAgency"/></p>
+                </div>
+                <div id="addClient">
+                    <p>Email:<input type="email" th:field="${clientForm.email}" id="email" class="nameUser"/>
+                        <span class="validationError"
+                              th:if="${#fields.hasErrors('${clientForm.email}')}"
+                              th:errors="${clientForm.email}">
+                        </span>
+                    </p>
+                </div>
+                <p>Логин:<input type="text" th:field="*{login}" class="nameUser"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('login')}"
+                      th:errors="*{login}">
+                </span>
+                <p>Пароль:<input type="password" th:field="*{password}" class="nameUser"/></p>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}">
+                </span>
+
+                <p hidden  th:if="${#fields.hasErrors()}" th:utext="errors" id="hasErrorsAddUser">...</p>
+
+                <input type="submit" value="ДОБАВИТЬ" class="button buttonAdd" id="addUserApp"/>
+            </form>
+            <input type="button" value="ОЧИСТИТЬ" class="button buttonClean" />
+        </div>
+
+        <footer class="footerAddUser"> <small>
+            <p>© Прокопович Анастасия</p>
+            <p>nastua.tim.pro@gmail.com</p>
+            <p>Минск, 2020</p>
+        </small> </footer>
+    </div>
+    <script src='http://code.jquery.com/jquery-latest.js'></script>
+    <script th:src="@{/js/alert-sc.js}"></script>
+    <script th:src="@{/js/indexScript.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</body>
+</html>
